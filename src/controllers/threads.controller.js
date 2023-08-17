@@ -2,9 +2,10 @@ const threadsService = require("../services/threads.service");
 
 const threadSet = async (req, res) => {
   try {
-    const test = await threadsService.threadSet(res.user.user_id);
 
-    res.status(200).json(test);
+    const threadSetId = await threadsService.threadSet(res.user.user_id);
+
+    res.status(200).json(threadSetId);
   } catch (err) {
     res.status(err.statusCode || 400).json({ message: err.message });
   }
@@ -13,7 +14,6 @@ const threadSet = async (req, res) => {
 const threadCreate = async (req, res) => {
   try {
     const { content } = req.body;
-    // const userId = req.user.id
 
     await threadsService.threadCreate(res.user.user_id, content);
 
@@ -49,9 +49,9 @@ const threadDelete = async (req, res) => {
 
 const threadList = async (req, res) => {
   try {
-    const test1 = await threadsService.threadList();
+    const threadListShow = await threadsService.threadList();
 
-    res.status(200).json(test1);
+    res.status(200).json(threadListShow);
   } catch (err) {
     res.status(err.statusCode || 400).json({ message: err.message });
   }
