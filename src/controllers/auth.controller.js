@@ -2,9 +2,9 @@ const authService = require('../services/auth.service');
 
 const signUp = async (req, res) => {
   try {
-    const {email, password, nickname, profile_image, phone_number, birthday} = req.body;
+    const {email, password, userName, profileImage, phoneNumber, birthday} = req.body;
  
-    await authService.signUp(email, password, nickname, profile_image, phone_number, birthday);
+    await authService.signUp(email, password, userName, profileImage, phoneNumber, birthday);
 
     res.status(201).end();
   } catch (err) {

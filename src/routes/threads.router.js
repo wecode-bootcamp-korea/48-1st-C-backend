@@ -2,16 +2,34 @@ const express = require("express");
 
 const threadsController = require("../controllers/threads.controller");
 
+const { checkVerify, moveLogin } = require("../../src/utils/token.verify");
+
 const threadsRouter = express.Router();
 
-//thread 작성
-threadsRouter.post("/contentup", threadsController.threadUp);
+threadsRouter.get(
+  "/set",
+  [checkVerify, moveLogin],
+  threadsController.threadSet
+);
 
-//thread 수정
-threadsRouter.put("/contentmod", threadsController.threadMod);
+threadsRouter.post(
+  "/upload",
+  [checkVerify, moveLogin],
+  threadsController.threadCreate
+);
 
-//thread 삭제
-threadsRouter.delete("/content-delete", threadsController.threadDelete);
+threadsRouter.put(
+  "/modify",
+  [checkVerify, moveLogin],
+  threadsController.threadModify
+);
 
+threadsRouter.delete(
+  "/delete",
+  [checkVerify, moveLogin],
+  threadsController.threadDelete
+);
 
-module.exports = {threadsRouter};
+threadsRouter.get("/list", threadsController.threadList);
+
+module.exports = { threadsRouter };

@@ -1,19 +1,29 @@
-const threadsDao = require('../models/threads.dao');
+const threadsDao = require("../models/threads.dao");
 
-//thread 작성
-const threadUp = async (user_id, content) => {
+const threadSet = async (user_id) => {
+  return await threadsDao.setThread(user_id);
+};
+
+const threadCreate = async (user_id, content) => {
   await threadsDao.createThread(user_id, content);
 };
 
-
-//thread 수정
-const threadMod = async (content, id) => {
-    await threadsDao.modifyThread(content, id);
+const threadModify = async (content, id) => {
+  await threadsDao.modifyThread(content, id);
 };
 
-//thread 삭제
 const threadDelete = async (id) => {
-    await threadsDao.deleteThread(id);
+  await threadsDao.deleteThread(id);
 };
 
-module.exports = { threadUp, threadMod, threadDelete};
+const threadList = async () => {
+  return await threadsDao.listThread();
+};
+
+module.exports = {
+  threadSet,
+  threadCreate,
+  threadModify,
+  threadDelete,
+  threadList
+};

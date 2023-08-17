@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const userDao = require('../models/user.dao');
 const { validateEmail } = require('../utils/validators');
 
-const signUp = async (email, password) => {
+const signUp = async (email, password, userName, profileImage, phoneNumber, birthday) => {
   validateEmail(email);
 
   const user = await userDao.getUserByEmail(email);
@@ -15,8 +15,20 @@ const signUp = async (email, password) => {
     throw err;
   }
 
+  if (!userName) {
+    defalutUserName = process.env.NONAME;
+  }else{
+    defalutUserName = userName;
+  }
+
+  if (!profileImage) {
+    defalutProfileImage = process.env.NOIMAGE;
+  }else {
+    defalutProfileImage = profileImage;
+  }
+
   const hashedPassword = await bcrypt.hash(password, 10);
-  await userDao.createUser(email, hashedPassword);
+  await userDao.createUser(email, hashedPassword, defalutUserName, defalutProfileImage, phoneNumber, birthday);
 };
 
 const signIn = async (email, password) => {
@@ -36,7 +48,14 @@ const signIn = async (email, password) => {
     throw err;
   }
 
-  return jwt.sign({ sub: user.id, email: user.email }, process.env.JWT_SECRET);
+  return jwt.sign(
+    {
+      user_id: user.id
+    },
+    process.env.JWT_SECRET
+  );
 };
+
+
 
 module.exports = { signUp, signIn };
